@@ -1,0 +1,9 @@
+{
+    "path_to_chome_driver" : "chromedriver.exe",
+    "data_dir" : "data",
+    "results_file_name" : "WikiPageLinks.csv",
+    "wiki_portal_links" : "WikiPortalLinks.txt",
+    "min_n_char": 30, 
+    "max_n_char" : 100,
+    "visible_browser" : "no"
+}
