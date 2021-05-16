@@ -55,7 +55,7 @@ for i, link in enumerate(tqdm(page_links_df.link.values)):
     except:
         driver.close()
         driver=webdriver.Chrome(path_to_chome_driver, options=options)
-        driver.implicitly_wait(2)
+        driver.implicitly_wait(1)
         driver.get(link)
 
     
