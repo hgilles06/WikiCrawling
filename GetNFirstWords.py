@@ -54,7 +54,7 @@ for i, link in enumerate(tqdm(page_links_df.link.values)):
         driver.get(link)
     except:
         driver.close()
-        driver=webdriver.Chrome("C:/Users/hgill/Documents/Perso/Projets/GoogleQA/chromedriver.exe")
+        driver=webdriver.Chrome(path_to_chome_driver, options=options)
         driver.implicitly_wait(2)
         driver.get(link)
 
