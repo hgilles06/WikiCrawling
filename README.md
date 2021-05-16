@@ -22,7 +22,7 @@ Run GetNFirstWords.py to obtain additionally the content of the article pages. A
 
 ## Parameters description 
 
-Here are description of parameters in the json file:
+Here is a detailed description of parameters in the json file:
 
 	- "path_to_chome_driver" (string) : path to the chrome driver executable (default is "chromedriver.exe"),
     - "data_dir" (string) : name of directory in which to save the collected data (default is "data"); it is created if it does not exist,
