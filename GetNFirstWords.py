@@ -29,6 +29,8 @@ page_links_df = pd.read_csv(os.path.join(data_dir, results_file_name))
 
 #Launching Chrome driver
 options = Options()
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
 options.add_argument('log-level=3')
 
 if visible_browser!="yes":
