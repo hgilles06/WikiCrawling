@@ -24,18 +24,18 @@ Run GetNFirstWords.py to obtain additionally the content of the article pages. A
 
 Here is a detailed description of parameters in the json file:
 
-		- "path_to_chome_driver" (string) : path to the chrome driver executable (default is "chromedriver.exe"),
-    - "data_dir" (string) : name of directory in which to save the collected data (default is "data"); it is created if it does not exist,
-    - "results_file_name" (string) : name of csv file in which to store the data (default is "WikiPageLinks.csv"); this file is stored in the "data_dir" directory,
-    - "wiki_portal_links" (string) : name of text file containing links to portal or sub-portal pages (default is "WikiPortalLinks.txt"); they must be a unique link per line,
-    - "min_n_char" (integer) : minimum number of characters per page when collecting pages content (default is 30); if shorter, the page is dropped out,
-    - "max_n_char" (integer) : maximum number of characters per page when collecting pages content (default is 100); if longer, only the first "max_n_char" are collected,
-    - "visible_browser" ("yes"/"no") :  should the Chrome browser be visible during crawling ? (default is "no")
+	- "path_to_chome_driver" (string) : path to the chrome driver executable (default is "chromedriver.exe"),
+	- "data_dir" (string) : name of directory in which to save the collected data (default is "data"); it is created if it does not exist,
+	- "results_file_name" (string) : name of csv file in which to store the data (default is "WikiPageLinks.csv"); this file is stored in the "data_dir" directory,
+	- "wiki_portal_links" (string) : name of text file containing links to portal or sub-portal pages (default is "WikiPortalLinks.txt"); they must be a unique link per line,
+	- "min_n_char" (integer) : minimum number of characters per page when collecting pages content (default is 30); if shorter, the page is dropped out,
+	- "max_n_char" (integer) : maximum number of characters per page when collecting pages content (default is 100); if longer, only the first "max_n_char" are collected,
+	- "visible_browser" ("yes"/"no") :  should the Chrome browser be visible during crawling ? (default is "no")
 
 
 ## Docker
 I provide a Dockerfile so that you can build a Docker image to run the python scripts.
 
-		- sudo docker build --tag wiki .
-		- sudo docker run -it wiki python GetPageLinksFromWikiPortals.py
-		- sudo docker run -it wiki python GetNFirstWords.py
+	- sudo docker build --tag wiki .
+	- sudo docker run -it wiki python GetPageLinksFromWikiPortals.py
+	- sudo docker run -it wiki python GetNFirstWords.py
