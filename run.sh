@@ -1,2 +1,2 @@
 python GetPageLinksFromWikiPortals.py
-python GetNFirstWords.py
+python GetNFirstChars.py
