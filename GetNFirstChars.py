@@ -13,7 +13,7 @@ import json
 #Loading parameters
 with open("parameters.json", "r") as file:
     parameters = json.load(file)
-    
+
 path_to_chome_driver = parameters["path_to_chome_driver"]
 
 data_dir = parameters["data_dir"]
@@ -44,14 +44,14 @@ driver.implicitly_wait(1)
 
 
 
-#Launching N first words extraction
+#Launching N first characters extraction
 
 punc_list = "()"
 pattern_punc = "|".join([f"\{punc}" for punc in punc_list])
 
 
 for i, link in enumerate(tqdm(page_links_df.link.values)):
-  
+
     try:
         driver.get(link)
     except:
@@ -60,13 +60,13 @@ for i, link in enumerate(tqdm(page_links_df.link.values)):
         driver.implicitly_wait(1)
         driver.get(link)
 
-    
+
     title = page_links_df.loc[i, "title"]
     title =  unidecode.unidecode(title) ###removing accents
 
     title = re.sub(pattern_punc, "", title)
     title = title.lower().split()
-   
+
 
     paragraphs = [p.text for p in driver.find_elements_by_tag_name("p") if p.text!=""]
 
@@ -99,19 +99,19 @@ for i, link in enumerate(tqdm(page_links_df.link.values)):
 
 #Closing the browser
 driver.close()
-    
-    
+
+
 #Some processing and saving
 
 ##Dropping duplicates
 page_links_df = page_links_df.drop_duplicates(subset="first_paragraph")
 
-##Filtering out too short paragraphs 
+##Filtering out too short paragraphs
 page_links_df["para_length"] = page_links_df.first_paragraph.apply(len)
 page_links_df = page_links_df[page_links_df.para_length >= min_n_char] #filtering out too short paragraphs
 
 page_links_df = page_links_df.sort_values(by="page_length",axis=0, ascending=False)  #sorting from articles with longest length to articles with smallest length
-page_links_df = page_links_df.reset_index(drop=True) 
+page_links_df = page_links_df.reset_index(drop=True)
 page_links_df["article_id"] = range(1,page_links_df.shape[0]+1)  #indexing articles
 
 page_links_df[["article_id", "title", "link", "first_paragraph"]] .to_csv(os.path.join(data_dir, results_file_name), index=None)

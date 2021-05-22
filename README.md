@@ -37,7 +37,7 @@ Here is a detailed description of parameters in the json file:
 
 ## Docker
 
-We provide a Dockerfile so that you can build a Docker image to run the python scripts.
+We provide a Docker file so that you can build a Docker image to run the python scripts.
 
 	- sudo docker build --tag wiki .
 	- sudo docker run -it wiki python GetPageLinksFromWikiPortals.py
