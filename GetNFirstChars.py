@@ -23,7 +23,11 @@ visible_browser = parameters["visible_browser"]
 min_n_char = parameters["min_n_char"]
 max_n_char = parameters["max_n_char"]
 
+page_paragraph_limit = parameters["page_paragraph_limit"]
+
 page_links_df = pd.read_csv(os.path.join(data_dir, results_file_name))
+
+output_files = []
 
 
 
@@ -73,6 +77,7 @@ for i, link in enumerate(tqdm(page_links_df.link.values)):
     first_para = ""
     title_in = False
     sent = False
+    content = []
     for j,para in enumerate(paragraphs):
 
         para_norm = unidecode.unidecode(para)
@@ -88,32 +93,45 @@ for i, link in enumerate(tqdm(page_links_df.link.values)):
 
         if title_in&sent:
             first_para = para
-            content = " ".join(paragraphs[j:])
+            content.append(first_para)
             break
 
-    page_length = len(content)
-    first_para = first_para[:max_n_char] #Limiting to first max_n_char
+    counter = page_paragraph_limit
+    if len(paragraphs) > 0:
 
-    page_links_df.loc[i,["first_paragraph", "page_length"]] = first_para , page_length
+        for para in paragraphs:
+            page_length = len(para)
+            para = para[:max_n_char] #Limiting to first max_n_char
 
+            page_links_df.loc[i,["paragraph", "page_length"]] = para , page_length
+
+            output_files.append(page_links_df.loc[i])
+
+            counter -= 1
+
+            if counter < 0:
+                break
 
 #Closing the browser
 driver.close()
 
-
 #Some processing and saving
+output_df = pd.DataFrame(output_files, columns = ['title', 'link', 'paragraph', 'page_length'])
 
 ##Dropping duplicates
-page_links_df = page_links_df.drop_duplicates(subset="first_paragraph")
+page_links_df = page_links_df.drop_duplicates(subset="paragraph")
+
+output_df = output_df.drop_duplicates(subset="paragraph")
 
 ##Filtering out too short paragraphs
-page_links_df["para_length"] = page_links_df.first_paragraph.apply(len)
-page_links_df = page_links_df[page_links_df.para_length >= min_n_char] #filtering out too short paragraphs
+output_df["para_length"] = page_links_df.paragraph.apply(str.strip).apply(len)
+output_df = output_df[output_df.para_length >= min_n_char] #filtering out too short paragraphs
 
-page_links_df = page_links_df.sort_values(by="page_length",axis=0, ascending=False)  #sorting from articles with longest length to articles with smallest length
-page_links_df = page_links_df.reset_index(drop=True)
-page_links_df["article_id"] = range(1,page_links_df.shape[0]+1)  #indexing articles
+output_df = output_df.sort_values(by="page_length",axis=0, ascending=False)  #sorting from articles with longest length to articles with smallest length
+output_df = output_df.reset_index(drop=True)
+output_df["article_id"] = range(1,output_df.shape[0]+1)  #indexing articles
 
-page_links_df[["article_id", "title", "link", "first_paragraph"]] .to_csv(os.path.join(data_dir, results_file_name), index=None)
+#TODO changed the filename for the outout file, might want to do the same for the output file.
+output_df[["article_id", "title", "link", "paragraph"]] .to_csv(os.path.join(data_dir, "WikiPagePrompts.csv"), index=None)
 
 print("Everything is fine! :-)")
