@@ -3,8 +3,7 @@
     "data_dir" : "data",
     "results_file_name" : "WikiPageLinks.csv",
     "wiki_portal_links" : "WikiPortalLinks.txt",
-    "min_n_char": 50,
-    "max_n_char" : 150,
-    "visible_browser" : "no",
-    "page_paragraph_limit" : 15
+    "min_n_char": 30, 
+    "max_n_char" : 100,
+    "visible_browser" : "no"
 }
