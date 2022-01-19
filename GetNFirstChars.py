@@ -99,18 +99,21 @@ for i, link in enumerate(tqdm(page_links_df.link.values)):
     counter = page_paragraph_limit
     if len(paragraphs) > 0:
 
+        selected_para = ""
+        selected_para_len = 0
+
         for para in paragraphs:
-            page_length = len(para)
-            para = para[:max_n_char] #Limiting to first max_n_char
-
-            page_links_df.loc[i,["paragraph", "page_length"]] = para , page_length
-
-            output_files.append(page_links_df.loc[i])
-
+            selected_para_len = selected_para_len if len(para) < selected_para_len else len(para)
+            selected_para = selected_para if len(para) < selected_para_len else para
             counter -= 1
 
             if counter < 0:
                 break
+
+        page_links_df.loc[i, ["paragraph", "page_length"]] = selected_para[:max_n_char], selected_para_len
+
+        output_files.append(page_links_df.loc[i])
+
 
 #Closing the browser
 driver.close()
@@ -132,6 +135,6 @@ output_df = output_df.reset_index(drop=True)
 output_df["article_id"] = range(1,output_df.shape[0]+1)  #indexing articles
 
 #TODO changed the filename for the outout file, might want to do the same for the output file.
-output_df[["article_id", "title", "link", "paragraph"]] .to_csv(os.path.join(data_dir, "WikiPagePrompts.csv"), index=None)
+output_df[["article_id", "title", "link", "paragraph"]] .to_csv(os.path.join(data_dir, "WikiPagePromptsV2.csv"), index=None)
 
 print("Everything is fine! :-)")
